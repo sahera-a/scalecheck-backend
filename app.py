@@ -70,7 +70,10 @@ def submit_assessment():
     payload = request.get_json()
 
     org_name = payload.get("org_name", "Unnamed Org")
-    answers = payload.get("answers")  # expects the same shape as scoring.py's all_answers
+    org_name = payload.get("org_name", "Unnamed Org")
+    industry = payload.get("industry", "")
+    team_size = payload.get("team_size", "")
+    answers = payload.get("answers")
 
     if not answers:
         return jsonify({"error": "Missing 'answers' in request body"}), 400
@@ -78,14 +81,16 @@ def submit_assessment():
     result = run_assessment(answers)
 
     record = {
-        "id": str(uuid.uuid4()),
-        "org_name": org_name,
-        "answers": answers,
-        "dimension_scores": result["dimension_scores"],
-        "overall_score": result["overall_score"],
-        "risk_flags": result["risk_flags"],
-        "timestamp": datetime.utcnow().isoformat(),
-    }
+    "id": str(uuid.uuid4()),
+    "org_name": org_name,
+    "industry": industry,
+    "team_size": team_size,
+    "answers": answers,
+    "dimension_scores": result["dimension_scores"],
+    "overall_score": result["overall_score"],
+    "risk_flags": result["risk_flags"],
+    "timestamp": datetime.utcnow().isoformat(),
+}
 
     save_submission(record)
     return jsonify(record), 201
@@ -116,6 +121,42 @@ def benchmarks():
         "average_scores": averages,
     })
 
+FEEDBACK_FILE = "feedback.json"
+
+def _ensure_feedback_file():
+    if not os.path.exists(FEEDBACK_FILE):
+        with open(FEEDBACK_FILE, "w") as f:
+            json.dump([], f)
+
+
+def save_feedback(record):
+    if USE_MONGO:
+        db["feedback"].insert_one(record.copy())
+    else:
+        _ensure_feedback_file()
+        with open(FEEDBACK_FILE, "r") as f:
+            data = json.load(f)
+        data.append(record)
+        with open(FEEDBACK_FILE, "w") as f:
+            json.dump(data, f, indent=2)
+
+
+@app.route("/feedback", methods=["POST"])
+def submit_feedback():
+    payload = request.get_json()
+    rating = payload.get("rating")
+    if not rating:
+        return jsonify({"error": "Missing 'rating'"}), 400
+
+    record = {
+        "id": str(uuid.uuid4()),
+        "org_name": payload.get("org_name", "Unnamed Org"),
+        "rating": rating,
+        "comment": payload.get("comment", ""),
+        "timestamp": datetime.utcnow().isoformat(),
+    }
+    save_feedback(record)
+    return jsonify(record), 201
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

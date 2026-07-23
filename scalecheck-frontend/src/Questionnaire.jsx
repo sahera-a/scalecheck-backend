@@ -2,14 +2,13 @@ import { useState } from "react";
 import { QUESTIONS, DIMENSION_LABELS } from "./questions";
 import axios from "axios";
 
-const DIMENSIONS = Object.keys(QUESTIONS); // ["ownership", "integration", ...]
+const DIMENSIONS = Object.keys(QUESTIONS);
 
-function Questionnaire({ onResult }) {
-  const [step, setStep] = useState(0); // which dimension we're on
-  const [orgName, setOrgName] = useState("");
+function Questionnaire({ orgInfo, onResult }) {
+  const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState(
     DIMENSIONS.reduce((acc, dim) => {
-      acc[dim] = QUESTIONS[dim].map(() => 2); // default all answers to 2 (mid)
+      acc[dim] = QUESTIONS[dim].map(() => 2);
       return acc;
     }, {})
   );
@@ -40,13 +39,20 @@ function Questionnaire({ onResult }) {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.post("http://127.0.0.1:5000/assessment", {
-        org_name: orgName || "Unnamed Org",
-        answers: answers,
-      });
+      const response = await axios.post(
+        "https://ion-scale-check-diagnostic.onrender.com/assessment",
+        {
+          org_name: orgInfo?.orgName || "Unnamed Org",
+          industry: orgInfo?.industry || "",
+          team_size: orgInfo?.teamSize || "",
+          answers: answers,
+        }
+      );
       onResult(response.data);
     } catch (err) {
-      setError("Something went wrong submitting your assessment. Check that the backend server is running.");
+      setError(
+        "Something went wrong submitting your assessment. Check that the backend server is running."
+      );
     } finally {
       setLoading(false);
     }
@@ -57,18 +63,6 @@ function Questionnaire({ onResult }) {
       <div className="progress-bar">
         Step {step + 1} of {DIMENSIONS.length}
       </div>
-
-      {step === 0 && (
-        <div className="org-name-input">
-          <label>Organization name</label>
-          <input
-            type="text"
-            value={orgName}
-            onChange={(e) => setOrgName(e.target.value)}
-            placeholder="e.g. Acme Corp"
-          />
-        </div>
-      )}
 
       <h2>{DIMENSION_LABELS[currentDim]}</h2>
 

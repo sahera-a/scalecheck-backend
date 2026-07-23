@@ -19,7 +19,7 @@ function generateNarrative(result) {
   return `${org_name} scores ${overall_score}/100 overall. The diagnostic flags risk of ${flagNames}. This pattern mirrors what the underlying research identifies as the leading cause of stalled pilot-to-production conversion in Indian enterprises: not budget constraints, but structural and governance gaps that widen the longer they go unaddressed.`;
 }
 
-function Results({ result, onRestart }) {
+function Results({ result, onRestart, onFeedback }) {
   const { org_name, dimension_scores, overall_score, risk_flags } = result;
 
   const chartData = Object.entries(dimension_scores).map(([key, value]) => ({
@@ -50,13 +50,7 @@ function Results({ result, onRestart }) {
           <PolarGrid stroke="#ddd" />
           <PolarAngleAxis dataKey="dimension" tick={{ fill: "#0a1f44", fontSize: 12 }} />
           <PolarRadiusAxis angle={30} domain={[0, 100]} tick={{ fill: "#888", fontSize: 10 }} />
-          <Radar
-            name="Score"
-            dataKey="score"
-            stroke="#c9a24b"
-            fill="#c9a24b"
-            fillOpacity={0.4}
-          />
+          <Radar name="Score" dataKey="score" stroke="#c9a24b" fill="#c9a24b" fillOpacity={0.4} />
         </RadarChart>
       </ResponsiveContainer>
 
@@ -73,9 +67,14 @@ function Results({ result, onRestart }) {
         Indian enterprise AI pilots fail to reach production.
       </div>
 
-      <button className="restart-button" onClick={onRestart}>
-        Start New Assessment
-      </button>
+      <div className="results-actions">
+        <button className="cta-button" onClick={onFeedback}>
+          Share Feedback
+        </button>
+        <button className="restart-button" onClick={onRestart}>
+          Start New Assessment
+        </button>
+      </div>
     </div>
   );
 }
