@@ -1,0 +1,229 @@
+:root {
+  --navy: #0a1f44;
+  --navy-light: #16305e;
+  --gold: #c9a24b;
+  --gold-light: #e4c979;
+  --bg: #f7f6f2;
+  --text-dark: #1a1a1a;
+  --text-light: #ffffff;
+  --risk-high: #b23a3a;
+  --risk-moderate: #c9a24b;
+  --risk-low: #3a7d5c;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text-dark);
+}
+
+.app {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.app h1 {
+  color: var(--navy);
+  font-size: 2.2rem;
+  margin-bottom: 4px;
+}
+
+.app > p {
+  color: var(--navy-light);
+  margin-top: 0;
+  margin-bottom: 32px;
+  font-size: 1.05rem;
+}
+
+/* --- Questionnaire --- */
+.questionnaire {
+  background: white;
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 2px 12px rgba(10, 31, 68, 0.08);
+}
+
+.progress-bar {
+  color: var(--gold);
+  font-weight: 600;
+  margin-bottom: 16px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+
+.org-name-input {
+  margin-bottom: 24px;
+}
+
+.org-name-input label {
+  display: block;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 6px;
+}
+
+.org-name-input input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.questionnaire h2 {
+  color: var(--navy);
+  border-bottom: 2px solid var(--gold);
+  padding-bottom: 8px;
+  margin-bottom: 20px;
+}
+
+.question-block {
+  margin-bottom: 20px;
+}
+
+.question-block p {
+  margin-bottom: 8px;
+  color: var(--text-dark);
+}
+
+.question-block input[type="range"] {
+  width: 80%;
+  accent-color: var(--gold);
+  vertical-align: middle;
+}
+
+.question-block span {
+  margin-left: 10px;
+  font-weight: 600;
+  color: var(--navy);
+}
+
+.nav-buttons {
+  margin-top: 24px;
+  display: flex;
+  gap: 12px;
+}
+
+.nav-buttons button {
+  background: var(--navy);
+  color: white;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.nav-buttons button:hover {
+  background: var(--navy-light);
+}
+
+.nav-buttons button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.error {
+  color: var(--risk-high);
+  font-weight: 500;
+}
+
+/* --- Results dashboard --- */
+.results {
+  background: white;
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 2px 12px rgba(10, 31, 68, 0.08);
+}
+
+.results h2 {
+  color: var(--navy);
+  margin-top: 0;
+}
+
+.overall-score {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--gold);
+  margin: 0;
+}
+
+.overall-score-label {
+  color: var(--navy-light);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 24px;
+}
+
+.risk-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.risk-badge {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: white;
+}
+
+.risk-badge.high {
+  background: var(--risk-high);
+}
+
+.risk-badge.moderate {
+  background: var(--risk-moderate);
+  color: var(--navy);
+}
+
+.report-section {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.report-section h3 {
+  color: var(--navy);
+}
+
+.report-section p {
+  line-height: 1.6;
+}
+
+.about-framework {
+  margin-top: 24px;
+  padding: 16px 20px;
+  background: var(--bg);
+  border-left: 3px solid var(--gold);
+  font-size: 0.9rem;
+  color: var(--navy-light);
+}
+
+.restart-button {
+  margin-top: 24px;
+  background: transparent;
+  color: var(--navy);
+  border: 1.5px solid var(--navy);
+  padding: 8px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.restart-button:hover {
+  background: var(--navy);
+  color: white;
+}
