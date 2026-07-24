@@ -73,6 +73,7 @@ def submit_assessment():
     org_name = payload.get("org_name", "Unnamed Org")
     industry = payload.get("industry", "")
     team_size = payload.get("team_size", "")
+    sector = payload.get("sector", "general")
     answers = payload.get("answers")
 
     if not answers:
@@ -85,6 +86,7 @@ def submit_assessment():
     "org_name": org_name,
     "industry": industry,
     "team_size": team_size,
+    "sector": sector,
     "answers": answers,
     "dimension_scores": result["dimension_scores"],
     "overall_score": result["overall_score"],
@@ -157,6 +159,79 @@ def submit_feedback():
     }
     save_feedback(record)
     return jsonify(record), 201
+
+    CONTACT_FILE = "contact_messages.json"
+
+def _ensure_contact_file():
+    if not os.path.exists(CONTACT_FILE):
+        with open(CONTACT_FILE, "w") as f:
+            json.dump([], f)
+
+
+def save_contact(record):
+    if USE_MONGO:
+        db["contact_messages"].insert_one(record.copy())
+    else:
+        _ensure_contact_file()
+        with open(CONTACT_FILE, "r") as f:
+            data = json.load(f)
+        data.append(record)
+        with open(CONTACT_FILE, "w") as f:
+            json.dump(data, f, indent=2)
+
+
+def get_all_contact():
+    if USE_MONGO:
+        return list(db["contact_messages"].find({}, {"_id": 0}))
+    _ensure_contact_file()
+    with open(CONTACT_FILE, "r") as f:
+        return json.load(f)
+
+
+def get_all_feedback():
+    if USE_MONGO:
+        return list(db["feedback"].find({}, {"_id": 0}))
+    _ensure_feedback_file()
+    with open(FEEDBACK_FILE, "r") as f:
+        return json.load(f)
+
+
+@app.route("/contact", methods=["POST"])
+def submit_contact():
+    payload = request.get_json()
+    name = payload.get("name")
+    email = payload.get("email")
+    message = payload.get("message")
+
+    if not name or not email or not message:
+        return jsonify({"error": "Missing required fields"}), 400
+
+    record = {
+        "id": str(uuid.uuid4()),
+        "name": name,
+        "email": email,
+        "message": message,
+        "timestamp": datetime.utcnow().isoformat(),
+    }
+    save_contact(record)
+    return jsonify({"success": True}), 201
+
+
+# --- Simple admin endpoints to view stored data (no auth — fine for a demo project) ---
+
+@app.route("/admin/submissions", methods=["GET"])
+def admin_submissions():
+    return jsonify(get_all_submissions())
+
+
+@app.route("/admin/feedback", methods=["GET"])
+def admin_feedback():
+    return jsonify(get_all_feedback())
+
+
+@app.route("/admin/contact", methods=["GET"])
+def admin_contact():
+    return jsonify(get_all_contact())
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

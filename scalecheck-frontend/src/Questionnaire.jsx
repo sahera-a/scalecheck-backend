@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { QUESTIONS, DIMENSION_LABELS } from "./questions";
+import { SECTOR_QUESTIONS, DIMENSION_LABELS } from "./questions";
 import axios from "axios";
 
-const DIMENSIONS = Object.keys(QUESTIONS);
-
 function Questionnaire({ orgInfo, onResult }) {
+  const QUESTIONS = SECTOR_QUESTIONS[orgInfo?.sector] || SECTOR_QUESTIONS.general;
+  const DIMENSIONS = Object.keys(QUESTIONS);
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState(
     DIMENSIONS.reduce((acc, dim) => {
@@ -45,6 +45,7 @@ function Questionnaire({ orgInfo, onResult }) {
           org_name: orgInfo?.orgName || "Unnamed Org",
           industry: orgInfo?.industry || "",
           team_size: orgInfo?.teamSize || "",
+          sector: orgInfo?.sector || "general",
           answers: answers,
         }
       );

@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Landing from "./Landing";
 import OrgIntake from "./OrgIntake";
 import Questionnaire from "./Questionnaire";
 import Results from "./Results";
 import Feedback from "./Feedback";
+import AdminView from "./AdminView";
 import "./App.css";
 
 function App() {
@@ -11,14 +12,25 @@ function App() {
   const [orgInfo, setOrgInfo] = useState(null);
   const [result, setResult] = useState(null);
 
+  useEffect(() => {
+    if (window.location.hash === "#admin") {
+      setView("admin");
+    }
+  }, []);
+
   const handleRestart = () => {
     setOrgInfo(null);
     setResult(null);
+    window.location.hash = "";
     setView("landing");
   };
 
   const steps = ["Org Info", "Assessment", "Results", "Feedback"];
   const stepIndex = { intake: 0, questionnaire: 1, results: 2, feedback: 3 }[view];
+
+  if (view === "admin") {
+    return <AdminView />;
+  }
 
   return (
     <div className={`app ${view === "landing" ? "app-landing" : ""}`}>

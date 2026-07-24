@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { SECTOR_LABELS } from "./questions";
 
 function OrgIntake({ onSubmit }) {
   const [orgName, setOrgName] = useState("");
   const [industry, setIndustry] = useState("");
   const [teamSize, setTeamSize] = useState("");
+  const [sector, setSector] = useState("general");
   const [touched, setTouched] = useState(false);
 
   const handleSubmit = (e) => {
@@ -12,7 +14,7 @@ function OrgIntake({ onSubmit }) {
       setTouched(true);
       return;
     }
-    onSubmit({ orgName: orgName.trim(), industry, teamSize });
+    onSubmit({ orgName: orgName.trim(), industry, teamSize, sector });
   };
 
   return (
@@ -51,6 +53,13 @@ function OrgIntake({ onSubmit }) {
           <option>6-20</option>
           <option>21-50</option>
           <option>50+</option>
+        </select>
+
+        <label>Sector</label>
+        <select value={sector} onChange={(e) => setSector(e.target.value)}>
+          {Object.entries(SECTOR_LABELS).map(([key, label]) => (
+            <option key={key} value={key}>{label}</option>
+          ))}
         </select>
 
         <button type="submit" className="primary-button">
