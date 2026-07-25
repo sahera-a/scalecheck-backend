@@ -931,3 +931,27 @@ body {
     padding: 20px 10px;
   }
 }
+/* --- Fix low-contrast headings and subtitles on intake & feedback screens --- */
+.intake-card h2,
+.feedback-card h2 {
+  color: var(--navy);
+  font-weight: 700;
+  opacity: 1;
+}
+
+.intake-subtitle {
+  color: #3a3a3a;
+}
+
+.feedback-card p {
+  color: #3a3a3a;
+}
+
+/* Placeholder text inside inputs/textareas defaults to a very light gray in most browsers */
+.intake-card input::placeholder,
+.feedback-card textarea::placeholder,
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+  color: #7a7a7a;
+  opacity: 1;
+}
