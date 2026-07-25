@@ -926,3 +926,8 @@ body {
     gap: 32px;
   }
 }
+@media (max-width: 480px) {
+  .results {
+    padding: 20px 10px;
+  }
+}

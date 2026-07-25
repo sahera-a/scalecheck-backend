@@ -6,8 +6,7 @@ import {
   PolarRadiusAxis,
   ResponsiveContainer,
 } from "recharts";
-import { DIMENSION_LABELS } from "./questions";
-
+import { DIMENSION_LABELS, SHORT_DIMENSION_LABELS } from "./questions";
 function generateNarrative(result) {
   const { org_name, overall_score, risk_flags } = result;
 
@@ -22,10 +21,10 @@ function generateNarrative(result) {
 function Results({ result, onRestart, onFeedback }) {
   const { org_name, dimension_scores, overall_score, risk_flags } = result;
 
-  const chartData = Object.entries(dimension_scores).map(([key, value]) => ({
-    dimension: DIMENSION_LABELS[key] || key,
-    score: value,
-  }));
+ const chartData = Object.entries(dimension_scores).map(([key, value]) => ({
+  dimension: SHORT_DIMENSION_LABELS[key] || key,
+  score: value,
+}));
 
   return (
     <div className="results">
@@ -45,14 +44,14 @@ function Results({ result, onRestart, onFeedback }) {
         ))}
       </div>
 
-      <ResponsiveContainer width="100%" height={320}>
-        <RadarChart data={chartData}>
-          <PolarGrid stroke="#ddd" />
-          <PolarAngleAxis dataKey="dimension" tick={{ fill: "#0a1f44", fontSize: 12 }} />
-          <PolarRadiusAxis angle={30} domain={[0, 100]} tick={{ fill: "#888", fontSize: 10 }} />
-          <Radar name="Score" dataKey="score" stroke="#c9a24b" fill="#c9a24b" fillOpacity={0.4} />
-        </RadarChart>
-      </ResponsiveContainer>
+     <ResponsiveContainer width="100%" height={330}>
+  <RadarChart data={chartData} outerRadius="58%" margin={{ top: 20, right: 30, bottom: 20, left: 30 }}>
+    <PolarGrid stroke="#ddd" />
+    <PolarAngleAxis dataKey="dimension" tick={{ fill: "#0a1f44", fontSize: 11, fontWeight: 600 }} />
+    <PolarRadiusAxis angle={30} domain={[0, 100]} tick={{ fill: "#888", fontSize: 9 }} />
+    <Radar name="Score" dataKey="score" stroke="#c9a24b" fill="#c9a24b" fillOpacity={0.4} />
+  </RadarChart>
+</ResponsiveContainer>
 
       <div className="report-section">
         <h3>Diagnostic Report</h3>

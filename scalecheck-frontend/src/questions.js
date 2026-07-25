@@ -159,7 +159,13 @@ export const DIMENSION_LABELS = {
   governance: "Governance",
   transformation: "Organizational Transformation",
 };
-
+export const SHORT_DIMENSION_LABELS = {
+  ownership: "Ownership",
+  integration: "Integration",
+  financial_value: "Financial",
+  governance: "Governance",
+  transformation: "Transformation",
+};
 export const SECTOR_LABELS = {
   healthcare: "Healthcare / Medical",
   ai_tech: "AI & Technology",
