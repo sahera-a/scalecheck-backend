@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 
-function Feedback({ orgName, onDone }) {
+function Feedback({ orgName, onDone, onToast }) {
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const [comment, setComment] = useState("");
@@ -20,8 +20,10 @@ function Feedback({ orgName, onDone }) {
         comment,
       });
       setSubmitted(true);
+      if (onToast) onToast("Thanks for your feedback!", "success");
     } catch (err) {
       setError("Couldn't submit feedback right now — please try again.");
+      if (onToast) onToast("Couldn't submit feedback", "error");
     } finally {
       setLoading(false);
     }

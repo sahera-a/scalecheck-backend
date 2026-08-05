@@ -5,18 +5,29 @@ import Questionnaire from "./Questionnaire";
 import Results from "./Results";
 import Feedback from "./Feedback";
 import AdminView from "./AdminView";
+import Toast from "./Toast";
 import "./App.css";
 
 function App() {
   const [view, setView] = useState("landing");
   const [orgInfo, setOrgInfo] = useState(null);
   const [result, setResult] = useState(null);
+  const [toasts, setToasts] = useState([]);
 
   useEffect(() => {
     if (window.location.hash === "#admin") {
       setView("admin");
     }
   }, []);
+
+  const showToast = (message, type = "success") => {
+    const id = Date.now();
+    setToasts((prev) => [...prev, { id, message, type }]);
+  };
+
+  const dismissToast = (id) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  };
 
   const handleRestart = () => {
     setOrgInfo(null);
@@ -34,6 +45,12 @@ function App() {
 
   return (
     <div className={`app ${view === "landing" ? "app-landing" : ""}`}>
+      <div className="toast-container">
+        {toasts.map((t) => (
+          <Toast key={t.id} message={t.message} type={t.type} onClose={() => dismissToast(t.id)} />
+        ))}
+      </div>
+
       {view !== "landing" && (
         <div className="app-header">
           <h1>ScaleCheck</h1>
@@ -71,7 +88,9 @@ function App() {
           onResult={(res) => {
             setResult(res);
             setView("results");
+            showToast("Assessment submitted successfully", "success");
           }}
+          onError={() => showToast("Submission failed — please try again", "error")}
         />
       )}
 
@@ -79,7 +98,9 @@ function App() {
         <Results result={result} onRestart={handleRestart} onFeedback={() => setView("feedback")} />
       )}
 
-      {view === "feedback" && <Feedback orgName={orgInfo?.orgName} onDone={handleRestart} />}
+      {view === "feedback" && (
+        <Feedback orgName={orgInfo?.orgName} onDone={handleRestart} onToast={showToast} />
+      )}
     </div>
   );
 }

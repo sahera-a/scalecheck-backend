@@ -218,19 +218,33 @@ def submit_contact():
 
 
 # --- Simple admin endpoints to view stored data (no auth — fine for a demo project) ---
+# --- Admin endpoints, password-protected via header ---
+
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "changeme")
+
+def check_admin_auth():
+    provided = request.headers.get("X-Admin-Password", "")
+    return provided == ADMIN_PASSWORD
+
 
 @app.route("/admin/submissions", methods=["GET"])
 def admin_submissions():
+    if not check_admin_auth():
+        return jsonify({"error": "Unauthorized"}), 401
     return jsonify(get_all_submissions())
 
 
 @app.route("/admin/feedback", methods=["GET"])
 def admin_feedback():
+    if not check_admin_auth():
+        return jsonify({"error": "Unauthorized"}), 401
     return jsonify(get_all_feedback())
 
 
 @app.route("/admin/contact", methods=["GET"])
 def admin_contact():
+    if not check_admin_auth():
+        return jsonify({"error": "Unauthorized"}), 401
     return jsonify(get_all_contact())
 
 if __name__ == "__main__":

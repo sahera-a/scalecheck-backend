@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { SECTOR_QUESTIONS, DIMENSION_LABELS } from "./questions";
 import axios from "axios";
+import ResultSkeleton from "./ResultSkeleton";
 
-function Questionnaire({ orgInfo, onResult }) {
+function Questionnaire({ orgInfo, onResult, onError }) {
   const QUESTIONS = SECTOR_QUESTIONS[orgInfo?.sector] || SECTOR_QUESTIONS.general;
   const DIMENSIONS = Object.keys(QUESTIONS);
+
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState(
     DIMENSIONS.reduce((acc, dim) => {
@@ -51,13 +53,16 @@ function Questionnaire({ orgInfo, onResult }) {
       );
       onResult(response.data);
     } catch (err) {
-      setError(
-        "Something went wrong submitting your assessment. Check that the backend server is running."
-      );
+      setError("Something went wrong submitting your assessment. Check that the backend server is running.");
+      if (onError) onError();
     } finally {
       setLoading(false);
     }
   };
+
+  if (loading) {
+    return <ResultSkeleton />;
+  }
 
   return (
     <div className="questionnaire">
