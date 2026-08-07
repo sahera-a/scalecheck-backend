@@ -1106,3 +1106,145 @@ body {
 .health-good { background: #6b9e3f; }
 .health-atrisk { background: #c9862f; }
 .health-critical { background: #b23a3a; }
+/* ===== Theme toggle ===== */
+.theme-toggle {
+  background: none;
+  border: 1.5px solid var(--gold);
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.25s;
+  margin-left: 16px;
+}
+
+.theme-toggle:hover {
+  transform: rotate(20deg);
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+}
+
+.floating-theme-toggle {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 100;
+}
+
+/* ===== Empty state ===== */
+.empty-state {
+  text-align: center;
+  padding: 50px 20px;
+}
+
+.empty-state-icon {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 16px;
+}
+
+.empty-state h3 {
+  color: var(--navy);
+  margin-bottom: 6px;
+}
+
+.empty-state p {
+  color: #888;
+  font-size: 0.9rem;
+}
+
+/* ===== Error boundary ===== */
+.error-boundary {
+  max-width: 480px;
+  margin: 100px auto;
+  text-align: center;
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(10,31,68,0.08);
+}
+
+.error-boundary h2 {
+  color: var(--risk-high);
+}
+
+/* ===== Dark mode ===== */
+[data-theme="dark"] {
+  --bg: #12182b;
+  --text-dark: #e8e8f0;
+}
+
+[data-theme="dark"] .questionnaire,
+[data-theme="dark"] .results,
+[data-theme="dark"] .intake-card,
+[data-theme="dark"] .feedback-card,
+[data-theme="dark"] .landing-nav,
+[data-theme="dark"] .pillar-card,
+[data-theme="dark"] .stat-card,
+[data-theme="dark"] .chart-box,
+[data-theme="dark"] .admin-table,
+[data-theme="dark"] .admin-login,
+[data-theme="dark"] .error-boundary {
+  background: #1b2340;
+}
+
+[data-theme="dark"] .questionnaire h2,
+[data-theme="dark"] .results h2,
+[data-theme="dark"] .landing-content-section h2,
+[data-theme="dark"] .pillar-card h3,
+[data-theme="dark"] .step-flow-item h4,
+[data-theme="dark"] .stepper-label,
+[data-theme="dark"] .intake-card h2,
+[data-theme="dark"] .feedback-card h2,
+[data-theme="dark"] .chart-box h4,
+[data-theme="dark"] .faq-question,
+[data-theme="dark"] .report-section h3,
+[data-theme="dark"] .empty-state h3,
+[data-theme="dark"] .app-header h1 {
+  color: #f0d9a0;
+}
+
+[data-theme="dark"] .intake-subtitle,
+[data-theme="dark"] .section-subtitle,
+[data-theme="dark"] .feedback-card p,
+[data-theme="dark"] .pillar-card p,
+[data-theme="dark"] .step-flow-item p,
+[data-theme="dark"] .faq-answer,
+[data-theme="dark"] .stat-card-label,
+[data-theme="dark"] .landing-footer,
+[data-theme="dark"] .app-header p {
+  color: #a8b0c8;
+}
+
+[data-theme="dark"] .intake-card input,
+[data-theme="dark"] .intake-card select,
+[data-theme="dark"] .feedback-card textarea,
+[data-theme="dark"] .contact-form input,
+[data-theme="dark"] .contact-form textarea,
+[data-theme="dark"] .admin-login input {
+  background: #12182b;
+  color: #e8e8f0;
+  border-color: #3a4470;
+}
+
+[data-theme="dark"] .faq-item,
+[data-theme="dark"] .landing-footer {
+  border-color: #2c3557;
+}
+
+[data-theme="dark"] .admin-table th,
+[data-theme="dark"] .admin-table td {
+  border-color: #2c3557;
+}
+
+[data-theme="dark"] .admin-table th {
+  background: #12182b;
+  color: #f0d9a0;
+}

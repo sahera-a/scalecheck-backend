@@ -6,6 +6,7 @@ import Results from "./Results";
 import Feedback from "./Feedback";
 import AdminView from "./AdminView";
 import Toast from "./Toast";
+import ThemeToggle from "./ThemeToggle";
 import "./App.css";
 
 function App() {
@@ -13,6 +14,14 @@ function App() {
   const [orgInfo, setOrgInfo] = useState(null);
   const [result, setResult] = useState(null);
   const [toasts, setToasts] = useState([]);
+  const [theme, setTheme] = useState(() => localStorage.getItem("scalecheck_theme") || "light");
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("scalecheck_theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () => setTheme((t) => (t === "light" ? "dark" : "light"));
 
   useEffect(() => {
     if (window.location.hash === "#admin") {
@@ -52,6 +61,12 @@ function App() {
       </div>
 
       {view !== "landing" && (
+        <div className="floating-theme-toggle">
+          <ThemeToggle theme={theme} onToggle={toggleTheme} />
+        </div>
+      )}
+
+      {view !== "landing" && (
         <div className="app-header">
           <h1>ScaleCheck</h1>
           <p>An OIN Diagnostic for Pilot-to-Production Readiness</p>
@@ -71,7 +86,9 @@ function App() {
         </div>
       )}
 
-      {view === "landing" && <Landing onStart={() => setView("intake")} />}
+      {view === "landing" && (
+        <Landing onStart={() => setView("intake")} theme={theme} onToggleTheme={toggleTheme} />
+      )}
 
       {view === "intake" && (
         <OrgIntake
@@ -104,5 +121,7 @@ function App() {
     </div>
   );
 }
+
+export default App;
 
 export default App;

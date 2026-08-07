@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import EmptyState from "./EmptyState";
 import axios from "axios";
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -127,6 +128,10 @@ function AdminView() {
 
       {tab === "overview" && (
         <>
+        {total === 0 ? (
+      <EmptyState title="No assessments yet" message="Once someone completes the diagnostic, your stats and charts will appear here." />
+    ) : (
+    <>
           <div className="stat-cards">
             <div className="stat-card"><span className="stat-card-value">{total}</span><span className="stat-card-label">Total Assessments</span></div>
             <div className="stat-card"><span className="stat-card-value">{passed}</span><span className="stat-card-label">Passed (No Flags)</span></div>
@@ -181,6 +186,8 @@ function AdminView() {
           <button className="primary-button" style={{ maxWidth: 220, marginTop: 24 }} onClick={exportCSV}>
             Export CSV
           </button>
+       </>
+        )}
         </>
       )}
 
@@ -199,6 +206,7 @@ function AdminView() {
             ))}
           </tbody>
         </table>
+  )
       )}
 
       {tab === "feedback" && (
